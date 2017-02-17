@@ -24,7 +24,7 @@ str = ['Maximo 7.5 Database ',schema,' is working!','\n','\n'];
 companyQuery = ['select companysetid, max(changedate) "changedate" from compmaster where changeby = ','\'','MXINTADM','\'','group by companysetid'];
 companyQuery = ''.join(companyQuery);
 
-outboundQuery = ['select orgid, siteid, count(*) "count" from INVOICE where issent = 0 and status = ','\'','APPR','\'', ' and orgid <>', '\'','BEDFORD','\'' ,' group by orgid, siteid']
+outboundQuery = ['select orgid, siteid, count(*) "count" from INVOICE where status = ','\'','APPR','\'', ' and orgid <>', '\'','BEDFORD','\'' ,' group by orgid, siteid']
 outboundQuery = ''.join(outboundQuery);
 
 
@@ -82,17 +82,18 @@ try:
 			str.append('\t');
 			str.append(count);
 			str.append('\n');
-			if (rs3.next() == False) :
+			if (rs2.next() == False) :
 				break	
 		rs2.close();
 	str.append('\n');
     	s.close();
 except	 Exception, e:
 	str.append("error in db");
+	str.append(repr(e))
 	
 emailBody = ''.join(str);
-emailTo = ['surendar_balasundaram@xxxxx.com'] ;
-emailFrom = 'donotreply@in.ibm.com';
+emailTo = ['@.com'] ;
+emailFrom = 'maximo@ibm.com';
 emailSubject = 'Daily Monitoring Check List';
 
 MXServer.sendEMail(emailTo, emailFrom, emailSubject, emailBody);
